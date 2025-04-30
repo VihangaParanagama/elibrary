@@ -2,31 +2,35 @@ package com.test.elibrary.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "borrowed_books")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class TransactionEntity {
+public class BorrowedBookEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionId;
+    private Long borrowId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @Column(nullable = false)
-    private Double amount;
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private BookEntity book;
 
     @Column(nullable = false)
-    private LocalDateTime transactionDate;
+    private LocalDate borrowDate;
+
+    @Column
+    private LocalDate returnDate;
 
     @Column(nullable = false)
-    private String type; // Fine / Payment
+    private String status; // Borrowed / Returned
 }

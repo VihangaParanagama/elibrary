@@ -5,25 +5,40 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")  // "user" is a reserved SQL keyword, so use "users"
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
+    @Column(nullable = false, unique = true)
     private String username;
-    private String password;
-    private String role; // LIBRARIAN or USER
 
-    @ManyToOne
-    @JoinColumn(name = "librarian_id")
-    private LibrarianEntity librarian;
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles;
+
+    // Get the first role or any logic based on your requirement
+    public RoleEntity getRole() {
+        return roles.iterator().next(); // Get the first role (you can change this logic)
+    }
 }
