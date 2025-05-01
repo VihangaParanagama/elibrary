@@ -1,14 +1,12 @@
 package com.test.elibrary.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")  // "user" is a reserved SQL keyword, so use "users"
+@Table(name = "users") // "user" is a reserved word in many databases
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,8 +35,8 @@ public class UserEntity {
     )
     private Set<RoleEntity> roles;
 
-    // Get the first role or any logic based on your requirement
-    public RoleEntity getRole() {
-        return roles.iterator().next(); // Get the first role (you can change this logic)
+    // Optional utility method to get a single role name (for JWT claim or display)
+    public String getFirstRoleName() {
+        return roles != null && !roles.isEmpty() ? roles.iterator().next().getName() : "UNKNOWN";
     }
 }
