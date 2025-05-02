@@ -1,15 +1,16 @@
 package com.test.elibrary.service;
 
 import com.test.elibrary.dto.BookDTO;
+import com.test.elibrary.entity.BookEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface BookService {
-    BookDTO addBook(BookDTO   bookDTO);
-    BookDTO getBookById(Long bookID);
-    List<BookDTO> getAllBook();
-    BookDTO updateBook(Long bookID, BookDTO bookDTO);
+    BookEntity addBook(BookDTO   bookDTO);
+    BookEntity getBookById(Long bookID);
+    List<BookEntity> getAllBook();
+    BookEntity updateBook(Long bookID, BookDTO bookDTO);
     boolean deleteBook(Long bookID);
 }

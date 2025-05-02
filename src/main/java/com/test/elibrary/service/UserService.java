@@ -12,7 +12,7 @@ public interface UserService {
 
     List<UserEntity> getAllUsers();
     UserEntity createUser(UserDTO userDTO);
-    UserEntity getUserById(Long id);
+    Optional<UserEntity> getUserById(Long id);
     UserEntity changePassword(Long id, UserPasswordDTO userPasswordDto);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

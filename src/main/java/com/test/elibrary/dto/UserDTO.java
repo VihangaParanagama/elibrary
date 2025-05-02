@@ -12,7 +12,8 @@ import java.util.Set;
 public class UserDTO {
     private Long id;
     private String username;
+    private String password;
     private String email;
-    private Set<String> roles; // Role names like ["ADMIN", "LIBRARIAN"]
+    private Set<String> roles;
 }
 
