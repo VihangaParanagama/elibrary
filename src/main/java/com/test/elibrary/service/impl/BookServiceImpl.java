@@ -1,6 +1,7 @@
 package com.test.elibrary.service.impl;
 
 import com.test.elibrary.dto.BookDTO;
+import com.test.elibrary.dto.BorrowedResponseDTO;
 import com.test.elibrary.entity.BookEntity;
 import com.test.elibrary.entity.CategoryEntity;
 import com.test.elibrary.repository.BookRepository;
@@ -30,6 +31,7 @@ public class BookServiceImpl implements BookService {
         newBookEntity.setAvailableCopies(bookDTO.getAvailableCopies());
 
         return bookRepository.save(newBookEntity);
+
 
     }
 

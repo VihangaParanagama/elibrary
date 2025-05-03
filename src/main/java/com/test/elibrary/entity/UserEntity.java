@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "users") // "user" is a reserved word in many databases
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor

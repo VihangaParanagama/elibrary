@@ -9,8 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class BorrowDTO {
-    private Long id;
+public class BorrowedRequestDTO {
     private Long userId;
     private Long bookId;
     private LocalDate borrowDate;
