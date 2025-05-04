@@ -28,4 +28,7 @@ public class BookEntity {
 
     @Column(nullable = false)
     private Integer availableCopies;
+
+    @Column(nullable = false)
+    private boolean availability;
 }

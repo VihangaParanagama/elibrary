@@ -82,6 +82,7 @@ public class BorroweServiceImpl implements BorrowedService {
 
     @Override
     public boolean isBookCurrentlyBorrowed(Long bookId) {
+
         return false;
     }
 
@@ -92,6 +93,6 @@ public class BorroweServiceImpl implements BorrowedService {
 
     @Override
     public void deleteBorrowingRecord(Long borrowId) {
-
+        borrowRepository.deleteById(borrowId);
     }
 }

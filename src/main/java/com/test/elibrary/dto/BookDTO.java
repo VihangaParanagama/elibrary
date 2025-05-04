@@ -13,4 +13,5 @@ public class BookDTO {
     private String author;
     private String category;
     private int availableCopies;
+    private boolean availability;
 }
