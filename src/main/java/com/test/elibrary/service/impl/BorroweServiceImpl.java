@@ -5,6 +5,7 @@ import com.test.elibrary.dto.BorrowedResponseDTO;
 import com.test.elibrary.entity.BookEntity;
 import com.test.elibrary.entity.BorrowedBookEntity;
 import com.test.elibrary.entity.UserEntity;
+import com.test.elibrary.mapper.BorrowedBookMapper;
 import com.test.elibrary.repository.BookRepository;
 import com.test.elibrary.repository.BorrowRepository;
 import com.test.elibrary.repository.UserRepository;
@@ -16,13 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 @Transactional
 public class BorroweServiceImpl implements BorrowedService {
     private final BorrowRepository borrowRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final BorrowedBookMapper borrowedBookMapper;
+
 
     @Override
     public BorrowedResponseDTO borrowBook(BorrowedRequestDTO requestDTO) {
@@ -49,7 +52,7 @@ public class BorroweServiceImpl implements BorrowedService {
 
         return new BorrowedResponseDTO(
                 borrowedBookEntity.getBorrowId(),
-                userEntity.getUserId(),
+                userEntity.getId(),
                 userEntity.getUsername(),
                 book.getBookId(),
                 book.getTitle(),
@@ -77,7 +80,7 @@ public class BorroweServiceImpl implements BorrowedService {
 
     @Override
     public List<BorrowedResponseDTO> getBorrowedBooksByUserId(Long userId) {
-        return null;
+        return borrowedBookMapper.toDtoList(borrowRepository.findAll());
     }
 
     @Override

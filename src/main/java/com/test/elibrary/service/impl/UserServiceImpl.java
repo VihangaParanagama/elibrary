@@ -7,10 +7,10 @@ import com.test.elibrary.entity.UserEntity;
 import com.test.elibrary.repository.RoleRepository;
 import com.test.elibrary.repository.UserRepository;
 import com.test.elibrary.service.UserService;
+import com.test.elibrary.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -23,42 +23,48 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserMapper userMapper;
 
     @Override
-    public List<UserEntity> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public UserEntity createUser(UserDTO userDTO) {
-        UserEntity newUserEntity  = new UserEntity();
-        newUserEntity .setUsername(userDTO.getUsername());
-        newUserEntity .setUserId(userDTO.getId());
-        newUserEntity .setEmail(userDTO.getEmail());
-        newUserEntity .setPassword(userDTO.getPassword());
+    public UserDTO createUser(UserDTO userDTO) {
+        UserEntity newUserEntity = new UserEntity();
+        newUserEntity.setUsername(userDTO.getUsername());
+        newUserEntity.setId(userDTO.getId());
+        newUserEntity.setEmail(userDTO.getEmail());
+        newUserEntity.setPassword(userDTO.getPassword());
 
         Set<RoleEntity> roleEntities = userDTO.getRoles().stream()
                 .map(roleName -> roleRepository.findByName(roleName)
                         .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
                 .collect(Collectors.toSet());
 
-        newUserEntity .setRoles(roleEntities);
-        return userRepository.save(newUserEntity );
+        newUserEntity.setRoles(roleEntities);
+        UserEntity savedUser = userRepository.save(newUserEntity);
+        return userMapper.toDto(savedUser);
     }
 
     @Override
-    public Optional<UserEntity> getUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<UserDTO> getUserById(Long id) {
+        return userRepository.findById(id).map(userMapper::toDto);
     }
 
     @Override
-    public UserEntity changePassword(Long id, UserPasswordDTO userPasswordDto) {
+    public UserDTO changePassword(Long id, UserPasswordDTO userPasswordDto) {
         UserEntity userEntity = userRepository.findById(id).orElse(null);
 
-        if(userEntity == null){
+        if (userEntity == null) {
             return null;
-        }else{
-            return  userRepository.save(userEntity);
+        } else {
+            userEntity.setPassword(userPasswordDto.getPassword());
+            UserEntity updatedUser = userRepository.save(userEntity);
+            return userMapper.toDto(updatedUser);
         }
     }
 
@@ -73,7 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserEntity> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<UserDTO> getUserByUsername(String username) {
+        return userRepository.findByUsername(username).map(userMapper::toDto);
     }
 }

@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface BorrowRepository extends JpaRepository<BorrowedBookEntity, Long> {
-
+    List<BorrowedBookEntity> findByUserId(Long userId); // works only if UserEntity has field 'id'
 }
