@@ -7,23 +7,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryEntity {
+public class MembershipEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private boolean paid;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoryEntity")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "membershipEntity")
     @JsonIgnore
     @ToString.Exclude
-    private List<BookEntity> bookEntityList;
+    private List<MemberEntity> memberEntityList;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "membershipEntity")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<PaymentEntity> paymentEntityList;
 }

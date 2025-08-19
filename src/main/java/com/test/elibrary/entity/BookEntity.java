@@ -1,34 +1,49 @@
 package com.test.elibrary.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.List;
 
 @Entity
-@Table(name = "books")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class BookEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bookId;
+    private Long id;
 
-    @Column(nullable = false)
     private String title;
-
-    @Column(nullable = false)
     private String author;
+    private int totalQty;
+    private String availability;
+    private String condition;
+    private String publisher;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity category;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    @JsonIgnore
+    private AuthorEntity authorEntity;
 
-    @Column(nullable = false)
-    private Integer availableCopies;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    @JsonIgnore
+    private CategoryEntity categoryEntity;
 
-    @Column(nullable = false)
-    private boolean availability;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bookSupplier_id")
+    @JsonIgnore
+    private BookSupplierEntity bookSupplierEntity;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookEntity")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<BorrowEntity> borrowEntity;
+
 }

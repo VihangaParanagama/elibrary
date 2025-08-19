@@ -1,33 +1,38 @@
 package com.test.elibrary.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionEntity {
+public class PaymentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;//credit or debit
     private Double amount;
-    private String Discription;
     private LocalDateTime localDateTime;
-    private String source;//donation, for book supplier
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "supplier_id",nullable = false)
-    private BookSupplierEntity bookSupplierEntity;
+    @JoinColumn(name = "Member_id",nullable = false)
+    private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "admin_id",nullable = false)
-    private AdminEntity adminEntity;
+    @JoinColumn(name = "Membership_id",nullable = false)
+    private MembershipEntity membershipEntity;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "paymentEntity")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<FineEntity> fineEntityList;
 }

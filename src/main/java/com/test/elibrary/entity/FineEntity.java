@@ -13,17 +13,19 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryEntity {
+public class FineEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoryEntity")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "fineEntity")
     @JsonIgnore
     @ToString.Exclude
-    private List<BookEntity> bookEntityList;
+    private List<BorrowEntity> borrowEntityList;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "fineEntity")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<PaymentEntity> paymentEntityList;
 }
